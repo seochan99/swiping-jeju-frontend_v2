@@ -1,0 +1,83 @@
+{
+  "name": "swiping-jeju",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prepare": "husky",
+    "cz": "cz",
+    "formatting": "prettier --write '**/*.{ts,tsx}' --ignore-unknown"
+  },
+  "dependencies": {
+    "next": "14.1.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/parser": "^7.0.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.1",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "types": {
+        "✨ Feat": {
+          "description": "A new feature or enhancement",
+          "title": "Feature"
+        },
+        "🐛 Fix": {
+          "description": " A bug fix",
+          "title": "Bug Fix"
+        },
+        "📝 docs": {
+          "description": " Documentation changes",
+          "title": "Documentation"
+        },
+        "🎨 Style": {
+          "description": " Code style changes",
+          "title": "Code Style"
+        },
+        "♻️ Refactor": {
+          "description": "  Code refactoring",
+          "title": "Code Refactoring"
+        },
+        "✅ test": {
+          "description": "Adding or modifying tests",
+          "title": "Tests"
+        },
+        "🚀 Deploy": {
+          "description": " Deploying stuff",
+          "title": "Deploy"
+        },
+        "🔧 Chore": {
+          "description": " Other changes that don't modify src or test files",
+          "title": "Chore"
+        },
+        "⚙️ Settings": {
+          "description": "  Changing configuration files",
+          "title": "Settings"
+        }
+      }
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write '**/*.{ts,tsx}' --ignore-unknown"
+    ]
+  }
+}
