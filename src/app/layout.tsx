@@ -1,6 +1,7 @@
 import '../styles/reset.css';
 import '../styles/globals.css';
 
+import clsx from 'clsx';
 import { Bagel_Fat_One } from 'next/font/google';
 import Link from 'next/link';
 
@@ -20,8 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={BagelFatOne.className}>
+    <html lang="en" className="flex w-screen justify-center">
+      <body
+        className={clsx(
+          [BagelFatOne.className],
+          ['min-h-screen w-full max-w-[430px]'],
+          ['shadow-xl'],
+        )}
+      >
         <nav className="w-full py-4">
           <ul className="flex gap-4">
             <li>
