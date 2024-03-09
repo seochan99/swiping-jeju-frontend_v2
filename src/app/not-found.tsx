@@ -3,10 +3,16 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import NextButton from '@/components/common/NextButton';
+
 const NotFoundPage = () => {
   const router = useRouter();
+
+  const goHome = () => {
+    router.push(`/`);
+  };
   return (
-    <div className="mx-5 flex w-80 flex-col items-center justify-center">
+    <div className="mx-5 flex h-[90%] flex-col items-center justify-center">
       <div className="text-2xl font-bold text-green-500">NOT FOUND!</div>
       <Image
         className="w-32"
@@ -20,14 +26,9 @@ const NotFoundPage = () => {
         <br />
         입력하신 주소가 정확한지 확인해주세요.
       </div>
-      <button
-        className="mt-5 w-full cursor-pointer rounded-lg bg-green-500 py-2 text-white"
-        onClick={() => {
-          router.push(`/`);
-        }}
-      >
-        홈으로
-      </button>
+      <div className="mx-5">
+        <NextButton onClick={goHome} text={'홈으로'} />
+      </div>
     </div>
   );
 };
