@@ -2,15 +2,21 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { createRef, RefObject, useMemo, useRef, useState } from 'react';
 
 import Card from '@/components/swiper/Card';
-import { API, Direction, ICardData } from '@/interfaces/swipe';
+import SwipeButton from '@/components/swiper/SwipeButton';
+import { useSwipe } from '@/hooks/swipe/useSwipe';
+import { ICardData } from '@/interfaces/swipe';
+import Dislike from '@/svg/dislike.svg';
+import Navigation from '@/svg/fork_right.svg';
+import Like from '@/svg/like.svg';
+import Submit from '@/svg/swipe_complete.svg';
+import { openKakaoMap } from '@/utils/swipe/openKakaoMap';
 
 const db: ICardData[] = [
   {
     title: '성산어물정',
-    img: '/0.jpeg',
+    img: '/images/0.jpeg',
     lng: 126.917306236842,
     lat: 33.4395648227551,
     content: `성산일출봉과 섭지코지 사이에 위치한 저희 제주 어물전은 제주도 특산물인 고등어회,딱새우회, 제주 갈치회 전문점으로 싱싱한 활어회와 함께 푸짐한 한상을 준비하였습니다. 주차 편의시설 또한 넓어서 불편함 없이 이용가능하십니다.`,
@@ -19,7 +25,7 @@ const db: ICardData[] = [
   },
   {
     title: '어조횟집',
-    img: '/1.jpeg',
+    img: '/images/1.jpeg',
     lng: 126.930809833027,
     lat: 33.4604386103906,
     content: `제주도 맛집 리스트 고민중이셨나요??
@@ -31,7 +37,7 @@ const db: ICardData[] = [
   },
   {
     title: '호랑호랑카페',
-    img: '/2.jpeg',
+    img: '/images/2.jpeg',
     lng: 126.921633330756,
     lat: 33.4495800115369,
     content: `제주도 핫플레이스 루프탑카페 ! 성산일출봉 오션뷰 카페 호랑호랑 입니다.
@@ -41,7 +47,7 @@ const db: ICardData[] = [
   },
   {
     title: '삼다도식당',
-    img: '/3.jpeg',
+    img: '/images/3.jpeg',
     lng: 126.915845324691,
     lat: 33.4484446960871,
     content: `성산일출봉근처에 위치한 갈치,고등어요리 전문점입니다!
@@ -53,50 +59,20 @@ const db: ICardData[] = [
 ];
 
 function SwipePage() {
-  const [placeId, setPlaceId] = useState<string[]>([]);
-  // const [lastDirection, setLastDirection] = useState<'left' | 'right'>();
-  const [currentIndex, setCurrentIndex] = useState(db?.length - 1);
-  const currentIndexRef = useRef(currentIndex);
+  const {
+    handleUndoSwipe,
+    swiped,
+    handleSwipe,
+    outOfFrame,
+    cardRefs,
+    swipeState: { isFirstCard, isLastCard, currentIndex },
+  } = useSwipe<ICardData>(db);
+
   const route = useRouter();
 
   // const [isComplete, setIsComplete] = useState(false);
   // const [isRunout, setIsRunout] = useState(false);
   // const [isFirst, setIsFirst] = useState(false);
-  const canGoBack = currentIndex < db?.length - 1;
-  const canSwipe = currentIndex >= 0;
-
-  const childRefs: RefObject<API>[] = useMemo(
-    () =>
-      Array(db?.length)
-        .fill(0)
-        .map(() => createRef()),
-    [],
-  );
-
-  const updateCurrentIndex = (val: number) => {
-    setCurrentIndex(val);
-    currentIndexRef.current = val;
-  };
-
-  // set last direction and decrease current index
-  const swiped = async (
-    direction: Direction,
-    placeId: string,
-    index: number,
-  ) => {
-    // setLastDirection(direction);
-    updateCurrentIndex(index - 1);
-    if (direction === 'right') {
-      setPlaceId((prev) => [...prev, placeId]);
-    }
-    if (
-      currentIndex === db?.length - 1 &&
-      localStorage.getItem('isFirst') === 'true'
-    ) {
-      // setIsFirst(true);
-      localStorage.setItem('isFirst', 'false');
-    }
-  };
 
   // useEffect(() => {
   //   if (!canSwipe) {
@@ -104,30 +80,7 @@ function SwipePage() {
   //   }
   // }, [currentIndex]);
 
-  const swipe = async (dir: Direction) => {
-    if (canSwipe && currentIndex < db?.length) {
-      await (childRefs[currentIndex].current as API).swipe(dir);
-    }
-  };
-
-  const outOfFrame = (placeId: string, idx: number) => {
-    // handle the case in which go back is pressed before card goes outOfFrame
-    currentIndexRef.current >= idx && childRefs[idx].current?.restoreCard();
-    // TODO: when quickly swipe and restore multiple times the same card,
-    // it happens multiple outOfFrame events are queued and the card disappear
-    // during latest swipes. Only the last outOfFrame event should be considered valid
-  };
-
-  // increase current index and show card
-  const goBack = async () => {
-    if (!canGoBack) return;
-    const newIndex = currentIndex + 1;
-    updateCurrentIndex(newIndex);
-    await childRefs[newIndex].current?.restoreCard();
-    setPlaceId((prev) => prev.slice(0, -1));
-  };
-
-  // const handleMakeList = async () => {
+  // const handleMakeList = async () => {}
   //   setIsComplete(false);
   //   setIsRunout(false);
 
@@ -136,9 +89,9 @@ function SwipePage() {
   //   }, 2000);
   // };
 
-  const openInGoogleMaps = (name: string, lat: number, lng: number) => {
-    const url = `https://map.kakao.com/link/to/${name},${lat},${lng}`;
-    window.open(url, '_blank');
+  const handleOpenKakaoMap = async () => {
+    const { lat, lng, title } = db[currentIndex];
+    openKakaoMap(lat, lng, title);
   };
 
   return (
@@ -152,10 +105,10 @@ function SwipePage() {
             alt="nav_logo"
           />
         </button>
-        {canGoBack ? (
+        {isFirstCard ? (
           <button
             type="button"
-            onClick={async () => await goBack()}
+            onClick={async () => await handleUndoSwipe()}
             className="size-12 bg-black"
           >
             <Image
@@ -170,13 +123,13 @@ function SwipePage() {
         )}
       </div>
 
-      {/* // ! Swipe Card Deck */}
-      <div className="flex flex-1 items-center justify-center">
-        {canSwipe ? (
+      {/* // * ---------- Swipe Card Deck ---------- */}
+      <div className="relative flex flex-1 items-center justify-center">
+        {isLastCard ? (
           db.map((place: ICardData, index) => (
             <Card
               key={place.title}
-              ref={childRefs[index]}
+              ref={cardRefs[index]}
               place={place}
               swiped={swiped}
               outOfFrame={outOfFrame}
@@ -189,103 +142,30 @@ function SwipePage() {
           </div>
         )}
 
-        <div className="absolute bottom-0 flex items-center justify-center space-x-4">
-          <button
+        {/* //  * -------- Swipe Button ------------ */}
+        <div className="absolute bottom-[50px] flex w-full items-center justify-center space-x-4 ">
+          <SwipeButton
             type="button"
-            onClick={() =>
-              openInGoogleMaps(
-                db[currentIndex].title,
-                db[currentIndex].lat,
-                db[currentIndex].lng,
-              )
-            }
-            className="size-12"
+            className="!size-[52px]"
+            onClick={handleOpenKakaoMap}
           >
-            <Image
-              src="/svg/fork_right.svg"
-              alt="like"
-              width={25}
-              height={25}
-            />
-          </button>
-          <button
+            <Navigation />
+          </SwipeButton>
+          <SwipeButton type="button" onClick={() => handleSwipe('left')}>
+            <Dislike className="scale-125" />
+          </SwipeButton>
+          <SwipeButton type="button" onClick={() => handleSwipe('right')}>
+            <Like className="scale-125" />
+          </SwipeButton>
+          <SwipeButton
             type="button"
-            onClick={() => swipe('left')}
-            disabled={!canGoBack}
+            className="!size-[52px]"
+            // onClick={() => setIsComplete(true)}
           >
-            <Image
-              src="/svg/dislike.svg"
-              alt="dislike"
-              width={25}
-              height={25}
-            />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => swipe('right')}
-            disabled={!canSwipe}
-          >
-            <Image src="/svg/like.svg" alt="like" width={40} height={40} />
-          </button>
-          <div className="relative size-12">
-            <button
-              type="button"
-              // onClick={() => setIsComplete(true)}
-              className="size-12"
-              disabled={placeId?.length === 0}
-            >
-              <Image
-                src="/svg/swipe_complete.svg"
-                alt="like"
-                width={25}
-                height={25}
-              />
-              <p className="absolute right-0 top-0 size-6 rounded-full bg-red-500 p-1 text-center text-white">
-                {placeId?.length}
-              </p>
-            </button>
-          </div>
+            <Submit />
+          </SwipeButton>
         </div>
       </div>
-      {/* {isComplete && (
-        <CustomModal
-          onConfirm={handleMakeList}
-          onClose={() => setIsComplete(false)}
-          bodyText={`진행 중인 스와이핑을 종료하고,\nAI 결과 리스트를 만드시겠습니까?`}
-          cancelText={'취소'}
-          confirmText={'만들기'}
-          isAlert={false}
-        />
-      )}
-      {isRunout && (
-        <CustomModal
-          onConfirm={handleMakeList}
-          bodyText={`선택이 모두 완료되었습니다. AI 결과 리스트를 생성합니다.`}
-          confirmText={'만들기'}
-          isAlert={true}
-        />
-      )}
-      {isFirst && (
-        <CustomModal
-          onConfirm={async () => {
-            await goBack();
-            setIsFirst(false);
-          }}
-          onClose={async () => {
-            setIsFirst(false);
-          }}
-          bodyText={
-            lastDirection === 'right'
-              ? `사진을 오른쪽으로 미는 것은 이 장소에 관심이 있다는 뜻입니다.`
-              : `이 장소에 관심이 없나요? 사진을 왼쪽으로 미는 것은 이 장소에 관심이 없다는 뜻입니다.`
-          }
-          cancelText={
-            lastDirection === 'right' ? '알고있어요 !' : '알고있어요 !'
-          }
-          confirmText={lastDirection === 'right' ? '몰랐어요 !' : '몰랐어요 !'}
-        />
-      )} */}
     </div>
   );
 }
