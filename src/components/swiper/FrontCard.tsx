@@ -19,7 +19,7 @@ const FrontCard: FC<Props> = ({ place, opacity, transform }) => {
         transform,
       }}
     >
-      <div className="absolute bottom-[25%] flex w-full flex-col gap-10 px-10">
+      <div className="absolute bottom-[150px] flex w-full flex-col gap-6 px-4">
         <div className="flex items-center justify-start">
           <p className="text-3xl font-bold text-white">{place.title}</p>
         </div>
@@ -27,7 +27,7 @@ const FrontCard: FC<Props> = ({ place, opacity, transform }) => {
           {place.keyword.map((keyword, index) => (
             <p
               key={index}
-              className="m-2 inline rounded-full bg-white px-4 py-2 text-black"
+              className="m-2 inline rounded-full bg-white px-2 py-1 text-sm text-black"
             >
               {keyword}
             </p>

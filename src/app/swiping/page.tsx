@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 import Card from '@/components/swiper/Card';
 import SwipeButton from '@/components/swiper/SwipeButton';
@@ -68,8 +67,6 @@ function SwipePage() {
     swipeState: { isFirstCard, isLastCard, currentIndex },
   } = useSwipe<ICardData>(db);
 
-  const route = useRouter();
-
   // const [isComplete, setIsComplete] = useState(false);
   // const [isRunout, setIsRunout] = useState(false);
   // const [isFirst, setIsFirst] = useState(false);
@@ -95,33 +92,16 @@ function SwipePage() {
   };
 
   return (
-    <div className="flex h-screen flex-col">
-      <div className="flex items-center justify-between p-4">
-        <button className="h-12 w-40" onClick={() => route.push('/')}>
-          <Image
-            src="/images/nav_logo.png"
-            width={140}
-            height={40}
-            alt="nav_logo"
-          />
+    <div className="flex h-[calc(100vh-74px)] w-full flex-col">
+      {isFirstCard && (
+        <button
+          type="button"
+          onClick={async () => await handleUndoSwipe()}
+          className="absolute right-0 top-[-60px] size-12 bg-black"
+        >
+          <Image src="/svg/undo_white.svg" alt="like" width={25} height={25} />
         </button>
-        {isFirstCard ? (
-          <button
-            type="button"
-            onClick={async () => await handleUndoSwipe()}
-            className="size-12 bg-black"
-          >
-            <Image
-              src="/svg/undo_white.svg"
-              alt="like"
-              width={25}
-              height={25}
-            />
-          </button>
-        ) : (
-          <div />
-        )}
-      </div>
+      )}
 
       {/* // * ---------- Swipe Card Deck ---------- */}
       <div className="relative flex flex-1 items-center justify-center">

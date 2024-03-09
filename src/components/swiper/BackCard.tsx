@@ -48,7 +48,7 @@ const BackCard: FC<Props> = ({ place, opacity, transform }) => {
             </p>
           ))}
         </div>
-        <p className="mb-[10px] h-auto max-h-[120px] max-w-[80%] overflow-auto rounded-[10px] px-[10px] text-[16px] leading-[20px] text-gray-300">
+        <p className="mb-[10px] h-auto max-h-[120px] max-w-full overflow-auto rounded-[10px] px-[10px] text-[16px] leading-[20px] text-gray-300">
           {place.content}
         </p>
       </div>
