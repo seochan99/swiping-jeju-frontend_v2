@@ -23,7 +23,7 @@ const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
 
   return (
     <>
-      <div className="mt-4 flex w-full items-center justify-center">
+      <div className="mt-5 flex w-full items-center justify-center pt-10">
         <Image
           src="/images/ReadMeLogo.png"
           alt="Logo"
