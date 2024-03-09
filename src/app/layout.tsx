@@ -21,12 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="flex w-screen justify-center">
+    <html lang="ko" className="flex w-screen justify-center bg-[#fff]">
       <body
         className={clsx(
           [BagelFatOne.className],
           ['min-h-screen w-full max-w-[430px]'],
           ['shadow-xl'],
+          ['bg-[#050014]'],
+          ['text-white'],
         )}
       >
         <nav className="w-full py-4">
