@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import * as C from '@/constants/home/home'; // 상수
+import * as C from '@/constants/home/map'; // 상수
 import { useMapSelection } from '@/hooks/home/useMapSelection'; // 지도 선택 훅
 import * as I from '@/interfaces/home/home'; // 인터페이스
 import { updateSwipingAlbumAndProceed } from '@/utils/home/updateSwipingAlbumAndProceed'; // 앨범 업데이트 및 진행 함수
