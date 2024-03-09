@@ -27,3 +27,8 @@ export interface MapOption {
   name: string;
   status: 'enabled' | 'disabled';
 }
+
+export interface HomeKeywordInputProps {
+  swipingAlbum: SwipingAlbum;
+  setSwipingAlbum: React.Dispatch<React.SetStateAction<SwipingAlbum>>;
+}

@@ -6,6 +6,9 @@ import { useMapSelection } from '@/hooks/home/useMapSelection'; // 지도 선택
 import * as I from '@/interfaces/home/home'; // 인터페이스
 import { updateSwipingAlbumAndProceed } from '@/utils/home/updateSwipingAlbumAndProceed'; // 앨범 업데이트 및 진행 함수
 
+import NextButton from '../common/NextButton';
+import KeywordTitle from './HomeTitle';
+
 // 지도 선택 컴포넌트
 const HomeMapSelection: React.FC<I.HomeMapSelectionProps> = ({
   onNext,
@@ -21,13 +24,8 @@ const HomeMapSelection: React.FC<I.HomeMapSelectionProps> = ({
         {/* --------------------------------------------------------- */}
         {/* ----------------------------TTILE ---------------------- */}
         {/* --------------------------------------------------------- */}
-        <div className="mb-12 mt-4 flex w-full justify-start">
-          <h1 className="text-4xl font-bold text-white">
-            원하는 <span className="text-[#00FF66]">장소</span>를
-            <br />
-            선택하세요
-          </h1>
-        </div>
+
+        <KeywordTitle text1="원하는" text2="장소" text3="를 선택하세요" />
         {/* --------------------------------------------------------- */}
         {/* ----------------------------MAP ---------------------- */}
         {/* --------------------------------------------------------- */}
@@ -77,20 +75,12 @@ const HomeMapSelection: React.FC<I.HomeMapSelectionProps> = ({
         {/* --------------------------------------------------------- */}
         {/* -----------------------Next Button ---------------------- */}
         {/* --------------------------------------------------------- */}
-        <div className="mt-8 flex w-full items-center justify-center">
-          <button
-            className="mt-4 h-12 w-full cursor-pointer rounded-lg border border-[#00FF66] bg-[#80FFB2] text-center text-base font-bold text-gray-800"
-            onClick={() =>
-              updateSwipingAlbumAndProceed(
-                selectedMaps,
-                setSwipingAlbum,
-                onNext,
-              )
-            }
-          >
-            다음
-          </button>
-        </div>
+        <NextButton
+          onClick={() =>
+            updateSwipingAlbumAndProceed(selectedMaps, setSwipingAlbum, onNext)
+          }
+          text={'다음'}
+        />
       </div>
     </>
   );
