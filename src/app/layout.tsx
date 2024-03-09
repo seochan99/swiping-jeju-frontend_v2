@@ -3,7 +3,6 @@ import '../styles/globals.css';
 
 import clsx from 'clsx';
 import { Bagel_Fat_One } from 'next/font/google';
-import Link from 'next/link';
 
 const BagelFatOne = Bagel_Fat_One({
   weight: '400',
@@ -31,7 +30,7 @@ export default function RootLayout({
           ['text-white'],
         )}
       >
-        <nav className="w-full py-4">
+        {/* <nav className="w-full py-4">
           <ul className="flex gap-4">
             <li>
               <Link href="/">Main</Link>
@@ -46,7 +45,7 @@ export default function RootLayout({
               <Link href="/result">Result</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
         {children}
       </body>
     </html>
