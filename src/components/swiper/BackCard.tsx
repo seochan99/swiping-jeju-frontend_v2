@@ -1,5 +1,6 @@
+import { a, SpringValue } from '@react-spring/web';
 import Image from 'next/image';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import { ICardData } from '@/interfaces/swipe';
 
@@ -7,31 +8,32 @@ import KakaoMap from './kakaoMap';
 
 interface Props {
   place: ICardData;
+  opacity: SpringValue<number>;
+  transform: SpringValue<string>;
 }
 
-const BackCard: FC<Props> = ({ place }) => {
+const BackCard: FC<Props> = ({ place, opacity, transform }) => {
   return (
-    <>
-      <div className="h-calc(100vh - 116px) p-80px p-20px absolute flex w-full max-w-full flex-col items-center justify-start gap-20 rounded-lg bg-gray-900 bg-cover">
-        <div className="flex w-full items-center justify-start"></div>
+    <a.div
+      className="absolute flex size-full max-w-full flex-col items-center justify-start space-y-5  bg-[#242424] bg-cover p-8"
+      style={{
+        opacity,
+        transform: transform.to((t) => `${t} rotateY(180deg)`),
+      }}
+    >
+      <div className="flex w-full items-center justify-start">
         <Image
           src="/svg/locationIcon.svg"
           alt="location"
           width={40}
           height={40}
         />
-        <p className="leading-28px text-[34px] font-bold text-white">
+        <p className="text-[34px] font-bold leading-[28px] text-white">
           {place.title}
         </p>
       </div>
 
-      <div className="absolute top-[20px] flex w-full justify-start px-[20px]">
-        <button className="whitespace-nowrap border-none bg-none p-0">
-          <Image src="/svg/undo.svg" alt="close" width={30} height={30} />
-        </button>
-      </div>
-
-      <div className="h-167px w-full">
+      <div className="h-[160px] w-full">
         <KakaoMap place={place} />
       </div>
 
@@ -40,7 +42,7 @@ const BackCard: FC<Props> = ({ place }) => {
           {place.keyword.map((keyword, index) => (
             <p
               key={index}
-              className="leading-19px mb-5px px-12px py-5px rounded-20px bg-black text-[10px] text-white"
+              className="mb-[5px] rounded-[20px] bg-black px-[12px] py-[5px] text-[10px] leading-[19px] text-white"
             >
               {keyword}
             </p>
@@ -50,7 +52,7 @@ const BackCard: FC<Props> = ({ place }) => {
           {place.content}
         </p>
       </div>
-    </>
+    </a.div>
   );
 };
 

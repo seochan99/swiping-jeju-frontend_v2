@@ -24,17 +24,21 @@ const Card = forwardRef<Ref, Props>(
       config: { mass: 5, tension: 500, friction: 80 },
     });
 
+    const handleOnSwiper = (dir: Direction) => {
+      swiped(dir, place.placeId, index);
+      setFlipped(false);
+    };
+
+    const handleOnCardLeftScreen = () => {
+      outOfFrame(place.placeId, index);
+      setFlipped(false);
+    };
+
     return (
       <TinderCard
         className="absolute flex size-full items-center justify-center"
-        onSwipe={(dir: Direction) => {
-          swiped(dir, place.placeId, index);
-          setFlipped(false);
-        }}
-        onCardLeftScreen={() => {
-          setFlipped(false);
-          outOfFrame(place.placeId, index);
-        }}
+        onSwipe={handleOnSwiper}
+        onCardLeftScreen={handleOnCardLeftScreen}
         ref={ref}
       >
         <div
@@ -42,7 +46,7 @@ const Card = forwardRef<Ref, Props>(
           onClick={() => setFlipped((prev) => !prev)}
           onTouchEnd={() => setFlipped((prev) => !prev)}
         >
-          <BackCard place={place} />
+          <BackCard place={place} opacity={opacity} transform={transform} />
           <FrontCard place={place} opacity={opacity} transform={transform} />
         </div>
       </TinderCard>
