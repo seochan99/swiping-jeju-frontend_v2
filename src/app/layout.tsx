@@ -3,7 +3,6 @@ import '../styles/globals.css';
 
 import clsx from 'clsx';
 import { Bagel_Fat_One } from 'next/font/google';
-import Link from 'next/link';
 
 const BagelFatOne = Bagel_Fat_One({
   weight: '400',
@@ -21,15 +20,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="flex w-screen justify-center">
+    <html lang="ko" className="flex w-screen justify-center bg-[#fff]">
       <body
         className={clsx(
           [BagelFatOne.className],
           ['min-h-screen w-full max-w-[430px]'],
           ['shadow-xl'],
+          ['bg-[#050014]'],
+          ['text-white'],
         )}
       >
-        <nav className="w-full py-4">
+        {/* <nav className="w-full py-4">
           <ul className="flex gap-4">
             <li>
               <Link href="/">Main</Link>
@@ -44,7 +45,7 @@ export default function RootLayout({
               <Link href="/result">Result</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
         {children}
       </body>
     </html>
