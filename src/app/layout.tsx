@@ -3,6 +3,7 @@ import '../styles/globals.css';
 
 import clsx from 'clsx';
 import { Bagel_Fat_One } from 'next/font/google';
+import Script from 'next/script';
 
 const BagelFatOne = Bagel_Fat_One({
   weight: '400',
@@ -30,23 +31,16 @@ export default function RootLayout({
           ['text-white'],
         )}
       >
-        {/* <nav className="w-full py-4">
-          <ul className="flex gap-4">
-            <li>
-              <Link href="/">Main</Link>
-            </li>
-            <li>
-              <Link href="/home">Home</Link>
-            </li>
-            <li>
-              <Link href="/swiping">Swiping</Link>
-            </li>
-            <li>
-              <Link href="/result">Result</Link>
-            </li>
-          </ul>
-        </nav> */}
         {children}
+
+        <Script
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`}
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

@@ -21,11 +21,21 @@ const config: Config = {
           from: { opacity: '0' },
           to: { opacity: '1' },
         },
+        SlideLeft: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-320%)' },
+        },
+        maskSlideLeft: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-60%)' },
+        },
       },
       animation: {
         slideRight: 'slideRight 1s forwards',
         maskSlideRight: 'maskSlideRight 1s forwards',
         fadeIn: 'fadeIn 1s forwards',
+        slideLeft: 'SlideLeft 1s forwards',
+        maskSlideLeft: 'maskSlideLeft 1s forwards',
       },
     },
   },
