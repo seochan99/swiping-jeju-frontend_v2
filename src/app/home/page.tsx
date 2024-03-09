@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
+import HomeKeywordInput from '@/components/home/HomeKeywordInput';
 import HomeLanding from '@/components/home/HomeLanding';
 import HomeMapSelection from '@/components/home/HomeMapSelection';
 import { SwipingAlbum } from '@/interfaces/home/home';
@@ -13,8 +14,6 @@ function Home(): JSX.Element {
     title: '',
     mapList: [],
   });
-
-  console.log(swipingAlbum);
   // 스텝 변경시 애니메이션 효과
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -46,12 +45,12 @@ function Home(): JSX.Element {
             setSwipingAlbum={setSwipingAlbum}
           />
         )}
-        {/* {step === 2 && (
-          <HomeStyleInput
+        {step === 2 && (
+          <HomeKeywordInput
             swipingAlbum={swipingAlbum}
             setSwipingAlbum={setSwipingAlbum}
           />
-        )} */}
+        )}
       </div>
     </>
   );
