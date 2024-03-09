@@ -1,6 +1,6 @@
 import { StaticImageData } from 'next/image';
 
-import * as C from '@/constants/home/home';
+import * as C from '@/constants/home/map';
 
 import Map0 from '../../../public/images/map/map_0.png';
 

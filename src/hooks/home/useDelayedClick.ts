@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 // 딜레이 클릭 훅
 function useDelayedClick(
   onNext: () => void,
-  delay: number = 1000,
+  delay: number = 900,
 ): [() => void, boolean] {
   // 클릭 상태
   const [isClicked, setIsClicked] = useState(false);
