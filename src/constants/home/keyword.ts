@@ -1,5 +1,5 @@
 // 전체 키워드 리스트
-export const keywordList = [
+export const KEYWORDLIST = [
   '감성',
   '게스트하우스',
   '고깃집',
