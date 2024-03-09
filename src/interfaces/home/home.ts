@@ -1,5 +1,10 @@
 import { StaticImageData } from 'next/image';
 
+//
+export interface HomeLandingProps {
+  onNext: () => void;
+}
+
 // 앨범 정보
 export interface SwipingAlbum {
   title: string;

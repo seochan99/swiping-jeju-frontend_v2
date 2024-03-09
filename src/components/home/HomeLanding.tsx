@@ -1,25 +1,12 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-interface HomeLandingProps {
-  onNext: () => void;
-}
+import useDelayedClick from '@/hooks/home/useDelayedClick';
+import { HomeLandingProps } from '@/interfaces/home/home';
 
 const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
-  const [isClicked, setIsClicked] = useState(false);
-
-  const handleClick = () => {
-    setIsClicked(true);
-  };
-
-  useEffect(() => {
-    if (isClicked) {
-      const timeoutId = setTimeout(() => {
-        onNext();
-      }, 1000);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [isClicked, onNext]);
+  // 딜레이 클릭 훅 사용
+  const [handleClick, isClicked] = useDelayedClick(onNext);
 
   return (
     <>
