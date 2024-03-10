@@ -38,15 +38,18 @@
         "ecmaVersion": "latest"
       },
       "rules": {
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": "warn",
+        "simple-import-sort/exports": "warn",
         "prettier/prettier": [
           "error",
           {
             "singleQuote": true,
             "endOfLine": "auto"
           }
-        ]
+        ],
+        "no-unused-vars": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "tailwindcss/no-custom-classname": "error"
       }
     }
   ]
