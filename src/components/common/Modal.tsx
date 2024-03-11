@@ -19,7 +19,7 @@ const Modal: FC<ModalProps> = ({ onClose, children, className, ...props }) => {
   const modalContent = (
     <div
       ref={overlayRef}
-      className={`fixed left-0 top-0 flex size-full items-center justify-center bg-black/50`}
+      className={`fixed left-0 top-0 flex h-screen w-screen  items-center justify-center bg-black/50`}
       onClick={handleOverlayClick}
     >
       <div className="max-w-[430px] px-4">
