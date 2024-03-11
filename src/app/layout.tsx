@@ -2,16 +2,9 @@ import '../styles/reset.css';
 import '../styles/globals.css';
 
 import clsx from 'clsx';
-import { Bagel_Fat_One } from 'next/font/google';
 import Script from 'next/script';
 
-const BagelFatOne = Bagel_Fat_One({
-  weight: '400',
-  subsets: ['latin'],
-  // https://github.com/vercel/next.js/issues/47115
-  // ! fix - `Failed to find font override values for font `Bagel Fat One`
-  adjustFontFallback: false,
-});
+import { NotoSans } from './fonts';
 
 export const metadata = {
   title: 'Next.js',
@@ -27,7 +20,7 @@ export default function RootLayout({
     <html lang="ko" className="flex w-screen justify-center bg-[#fff]">
       <body
         className={clsx(
-          [BagelFatOne.className],
+          [NotoSans.className],
           ['min-h-screen w-full max-w-[430px]'],
           ['shadow-xl'],
           ['bg-[#050014]'],
@@ -35,7 +28,7 @@ export default function RootLayout({
         )}
       >
         {children}
-
+        <div id="modal-root" />
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
