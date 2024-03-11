@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import Card from '@/components/swiper/Card';
@@ -86,6 +87,7 @@ function SwipePage() {
 
   const [isComplete, setIsComplete] = useState(false);
   const [isRunout, setIsRunout] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLastCard) {
@@ -102,8 +104,10 @@ function SwipePage() {
   const handleMakeList = async () => {
     setIsComplete(false);
     setIsRunout(false);
+
+    setLoading(true);
     setTimeout(() => {
-      setLoading(false);
+      router.push('/result/3');
     }, 5000);
   };
 
