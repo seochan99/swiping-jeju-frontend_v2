@@ -8,6 +8,9 @@ import Script from 'next/script';
 const BagelFatOne = Bagel_Fat_One({
   weight: '400',
   subsets: ['latin'],
+  // https://github.com/vercel/next.js/issues/47115
+  // ! fix - `Failed to find font override values for font `Bagel Fat One`
+  adjustFontFallback: false,
 });
 
 export const metadata = {
