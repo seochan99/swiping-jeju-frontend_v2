@@ -1,4 +1,5 @@
 // Import necessary modules and types
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { GrPowerReset } from 'react-icons/gr';
@@ -20,6 +21,20 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
   const { randomKeywords, refreshKeywords } = useKeywords(10);
   const router = useRouter();
 
+  const handleGetKeyword = async () => {
+    try {
+      const result = await axios
+        .post('/api/keywords', { question: inputText })
+        .then((res) => res.data);
+
+      const keywords = result.response.split(', ');
+
+      console.log('API 호추 결과: ', keywords);
+    } catch (error) {
+      console.error('API 호출 에러: ', error);
+    }
+  };
+
   // 제출
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -32,9 +47,10 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     // 상태 업데이트
     setSwipingAlbum(updatedAlbum);
 
-    const id = 3;
+    await handleGetKeyword();
+    // const id = 3;
     // 일단은 결과 페이지로 이동
-    router.push(`/result/${id}`);
+    // router.push(`/result/${id}`);
 
     setIsLoading(false);
     console.log('submitAlbum' + swipingAlbum);
