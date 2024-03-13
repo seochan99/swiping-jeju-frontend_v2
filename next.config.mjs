@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
@@ -18,7 +19,8 @@ const nextConfig = {
         use: ['@svgr/webpack'],
       },
     );
-
+    // https://github.com/langchain-ai/langchainjs/issues/943#issuecomment-1544928533
+    config.externals = [...config.externals, 'hnswlib-node'];
     fileLoaderRule.exclude = /\.svg$/i;
     return config;
   },
