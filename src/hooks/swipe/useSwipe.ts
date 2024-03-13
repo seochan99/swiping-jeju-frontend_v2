@@ -3,6 +3,7 @@ import { createRef, RefObject, useMemo, useRef, useState } from 'react';
 import { API, Direction } from '@/interfaces/swipe';
 
 export const useSwipe = <T>(items: T[]) => {
+  const [isFirstVisit, setIsFirstVisit] = useState<boolean>(false);
   const [idArray, setIdArray] = useState<string[]>([]);
   const [lastDirection, setLastDirection] =
     useState<Omit<Direction, 'up' | 'down'>>();
@@ -25,6 +26,7 @@ export const useSwipe = <T>(items: T[]) => {
 
   const handleUndoSwipe = async () => {
     if (!isFirstCard) return;
+    setIsFirstVisit(false);
     const newIndex = currentIndex + 1;
     handleCurrentIndex(newIndex);
     await cardRefs[newIndex].current?.restoreCard();
@@ -40,6 +42,14 @@ export const useSwipe = <T>(items: T[]) => {
     handleCurrentIndex(index - 1);
     if (direction === 'right') {
       setIdArray((prev) => [...prev, placeId]);
+    }
+
+    if (
+      currentIndex === items?.length - 1 &&
+      localStorage.getItem('isFirst') === 'true'
+    ) {
+      setIsFirstVisit(true);
+      localStorage.setItem('isFirst', 'false');
     }
   };
 
@@ -64,11 +74,13 @@ export const useSwipe = <T>(items: T[]) => {
     outOfFrame,
     cardRefs,
     idArray,
+    setIsFirstVisit,
     swipeState: {
       currentIndex,
       isFirstCard,
       isLastCard,
       lastDirection,
+      isFirstVisit,
     },
   };
 };

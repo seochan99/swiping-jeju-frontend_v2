@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 
-import Loading from '@/components/loading/Loading';
+import Loading from '@/components/common/Loading';
 import { useKeywords } from '@/hooks/home/useKeywords';
 import { HomeKeywordInputProps } from '@/interfaces/home/home';
 
