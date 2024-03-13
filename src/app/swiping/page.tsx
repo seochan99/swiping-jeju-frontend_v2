@@ -161,7 +161,7 @@ function SwipePage() {
           </div>
         )}
         {/* // * ----------------------------------- */}
-        {/* //  * -------- Swipe Button ------------ */}
+        {/* // * --------- Swipe Button ------------ */}
         {/* // * ----------------------------------- */}
         {!isRunout && (
           <div className="absolute bottom-[50px] flex w-full items-center justify-center space-x-4 ">
