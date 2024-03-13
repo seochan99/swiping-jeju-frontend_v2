@@ -30,6 +30,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
       const keywords = result.response.split(', ');
 
       console.log('API 호추 결과: ', keywords);
+      router.push('/swiping');
     } catch (error) {
       console.error('API 호출 에러: ', error);
     }
@@ -48,9 +49,6 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     setSwipingAlbum(updatedAlbum);
 
     await handleGetKeyword();
-    // const id = 3;
-    // 일단은 결과 페이지로 이동
-    // router.push(`/result/${id}`);
 
     setIsLoading(false);
     console.log('submitAlbum' + swipingAlbum);
