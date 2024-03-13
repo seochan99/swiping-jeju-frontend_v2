@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   // * 오픈AI 인스턴스를 생성합니다.
   const llm = new ChatOpenAI({
     openAIApiKey,
-    modelName: 'gpt-4-turbo-preview',
+    modelName: 'gpt-3.5-turbo',
     maxTokens: 200,
   });
 
