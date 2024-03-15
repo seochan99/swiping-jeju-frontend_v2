@@ -8,7 +8,7 @@
 
 # 👋 introduce team member
 
-## [Front-End](/frontend/naemansan/README.md)
+## Front-End
 
 | name                                    | Email                |
 | --------------------------------------- | -------------------- |
