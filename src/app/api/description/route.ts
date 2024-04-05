@@ -13,10 +13,10 @@ export async function POST(req: Request) {
 
   const places = data
     .map(
-      (place: { title: string; keyword: string[]; content: string }) =>
+      (place: { title: string; keywords: string[]; description: string }) =>
         `1. name of place: ${place.title}
-         2. vibe of place: ${place.keyword}.join(", ")
-         3. description of place: ${place.content}`,
+         2. vibe of place: ${place.keywords}.join(", ")
+         3. description of place: ${place.description}`,
     )
     .join('\n');
 

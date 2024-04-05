@@ -4,7 +4,7 @@ import { API, Direction } from '@/interfaces/swipe';
 
 export const useSwipe = <T>(items: T[]) => {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean>(false);
-  const [idArray, setIdArray] = useState<string[]>([]);
+  const [idArray, setIdArray] = useState<number[]>([]);
   const [lastDirection, setLastDirection] =
     useState<Omit<Direction, 'up' | 'down'>>();
   const [currentIndex, setCurrentIndex] = useState(items.length - 1);
@@ -35,13 +35,13 @@ export const useSwipe = <T>(items: T[]) => {
 
   const swiped = async (
     direction: Omit<Direction, 'up' | 'down'>,
-    placeId: string,
+    id: number,
     index: number,
   ) => {
     setLastDirection(direction);
     handleCurrentIndex(index - 1);
     if (direction === 'right') {
-      setIdArray((prev) => [...prev, placeId]);
+      setIdArray((prev) => [...prev, id]);
     }
 
     if (
@@ -59,7 +59,7 @@ export const useSwipe = <T>(items: T[]) => {
     }
   };
 
-  const outOfFrame = (placeId: string, idx: number) => {
+  const outOfFrame = (id: number, idx: number) => {
     currentIndexRef.current >= idx && cardRefs[idx].current?.restoreCard();
   };
 
