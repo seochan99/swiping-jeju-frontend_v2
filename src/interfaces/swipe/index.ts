@@ -1,11 +1,14 @@
 export interface ICardData {
+  id: number;
   title: string;
-  img: string;
-  lng: number;
+  description: string;
   lat: number;
-  content: string;
-  keyword: string[];
-  placeId: string;
+  lng: number;
+  img: string;
+  keywords: string[];
+  view: number;
+  like: number;
+  dislike: number;
 }
 
 export type Direction = 'left' | 'right' | 'up' | 'down';
