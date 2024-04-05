@@ -12,8 +12,13 @@ const useResultData = (id: string) => {
     const fetchNotice = async () => {
       setIsLoaded(true);
       try {
-        const DummyData: ResultData = DUMMY_DATA;
-        setResult(DummyData);
+        const response = await fetch(
+          `http://localhost:8080/api/v1/album/result?id=${id}`,
+        );
+        const resultData: ResultData = await response.json();
+        console.log('resultData:', resultData);
+        // const DummyData: ResultData = DUMMY_DATA;
+        setResult(resultData);
         setIsLoaded(false);
       } catch (error) {
         console.error('Error fetching result:', error);
