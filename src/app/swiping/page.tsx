@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 import Card from '@/components/swiper/Card';
 import SwipeButton from '@/components/swiper/SwipeButton';
+import { useAppDataStore } from '@/context/store';
 import { useSwipe } from '@/hooks/swipe/useSwipe';
 import { ICardData } from '@/interfaces/swipe';
 import Dislike from '@/svg/dislike.svg';
@@ -17,7 +18,7 @@ import Like from '@/svg/like.svg';
 import Submit from '@/svg/swipe_complete.svg';
 import { openKakaoMap } from '@/utils/swipe/openKakaoMap';
 
-import { CardData, ResultData } from './data';
+import { ResultData } from './data';
 
 const Loading = dynamic(() => import('@/components/common/Loading'), {
   ssr: false,
@@ -27,6 +28,9 @@ const Modal_Swipe = dynamic(() => import('@/components/swiper/Modal_Swipe'), {
 });
 
 function SwipePage() {
+  const appData = useAppDataStore.getState().appData;
+  const { hotPlaceList, id } = appData; // hotPlaceList 가져오기
+
   const {
     handleUndoSwipe,
     swiped,
@@ -41,7 +45,7 @@ function SwipePage() {
       isFirstVisit,
       lastDirection,
     },
-  } = useSwipe<ICardData>(CardData);
+  } = useSwipe<ICardData>(hotPlaceList);
 
   const [isComplete, setIsComplete] = useState(false);
   const [isRunout, setIsRunout] = useState(false);
@@ -54,19 +58,26 @@ function SwipePage() {
   }, [currentIndex, isLastCard]);
 
   const handleOpenKakaoMap = async () => {
-    const { lat, lng, title } = CardData[currentIndex];
+    const { lat, lng, title } = hotPlaceList[currentIndex];
     openKakaoMap(lat, lng, title);
   };
 
   const [loading, setLoading] = useState(false);
+
+  // 결과 리스트 만들기
   const handleMakeList = async () => {
     setIsComplete(false);
     setIsRunout(false);
-
     setLoading(true);
+
+    console.log('ResultData :', ResultData);
+
+    // 제목 및 설명 생성
     const title = await axios
       .post('/api/title', { data: ResultData })
       .then((res) => res.data);
+
+    // 설명
     const description = await axios
       .post('/api/description', {
         data: ResultData,
@@ -75,10 +86,29 @@ function SwipePage() {
 
     console.log('title :', title.result);
     console.log('description :', description.result);
+    // title.result 20글자만 보여주기
 
+    // 서버로 결과 데이터 전송
+    // TODO : likeIdList 실제 값 으로 대체 해야함 (임시값)
+    const response = await fetch('http://localhost:8080/api/v1/album/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        title: title.result.slice(0, 20),
+        content: description.result,
+        likeIdList: [1, 2, 3, 4, 5, 6],
+      }),
+    });
+    // 응답 확인
+    console.log('response :', response);
+
+    // 끝나면 결과 페이지로 이동
     setTimeout(() => {
-      router.push('/result/3');
-    }, 5000);
+      router.push(`/result/${id}`);
+    }, 1000);
   };
 
   return (
@@ -115,7 +145,7 @@ function SwipePage() {
       {/* // * ------------------------------------- */}
       <div className="relative flex flex-1 items-center justify-center">
         {isLastCard ? (
-          CardData.map((place: ICardData, index) => (
+          hotPlaceList.map((place: ICardData, index) => (
             <Card
               key={place.title}
               ref={cardRefs[index]}
