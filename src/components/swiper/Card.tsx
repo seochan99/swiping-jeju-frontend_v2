@@ -9,8 +9,8 @@ import FrontCard from './FrontCard';
 
 interface Props {
   place: ICardData;
-  swiped: (dir: Direction, placeId: string, index: number) => void;
-  outOfFrame: (placeId: string, index: number) => void;
+  swiped: (dir: Direction, id: number, index: number) => void;
+  outOfFrame: (id: number, index: number) => void;
   index: number;
 }
 export type Ref = API;
@@ -25,12 +25,12 @@ const Card = forwardRef<Ref, Props>(
     });
 
     const handleOnSwiper = (dir: Direction) => {
-      swiped(dir, place.placeId, index);
+      swiped(dir, place.id, index);
       setFlipped(false);
     };
 
     const handleOnCardLeftScreen = () => {
-      outOfFrame(place.placeId, index);
+      outOfFrame(place.id, index);
       setFlipped(false);
     };
 

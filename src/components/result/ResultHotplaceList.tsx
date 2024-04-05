@@ -13,16 +13,16 @@ const ResultHotplaceList: React.FC<ResultHotplaceListProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-3 items-center justify-center gap-2.5 p-4 text-gray-800">
+    <div className="grid grid-cols-2 items-center justify-center gap-2.5 p-4 text-gray-800">
       {hotplaces?.map((place) => (
         <div
           key={place.id}
-          className="flex cursor-pointer flex-row items-center rounded-full bg-white p-2"
-          onClick={() => openInKakaoMaps(place.name, place.lat, place.lng)}
+          className="flex cursor-pointer flex-row items-center rounded-full bg-white p-2 px-5"
+          onClick={() => openInKakaoMaps(place.title, place.lat, place.lng)}
         >
           <FaMapMarkerAlt color="#00FF66" className="text-[#00FF66]" />
           <span className="mx-2 truncate text-xs">
-            {place.name.slice(0, 5)}
+            {place.title.slice(0, 5)}
           </span>
           <RiDirectionLine />
         </div>
