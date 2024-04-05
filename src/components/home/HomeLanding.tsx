@@ -13,14 +13,14 @@ const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
 
   // cnt 값 가져오기 테스트
   const getCnt = async () => {
-    const response = await fetch('API_URL');
+    const response = await fetch('http://localhost:8080/api/v1/cnt');
     const data = await response.json();
+    setCnt(data.cnt);
     return data;
   };
 
   useEffect(() => {
-    const cnt = getCnt();
-    console.log(cnt);
+    getCnt();
   }, []);
 
   return (
