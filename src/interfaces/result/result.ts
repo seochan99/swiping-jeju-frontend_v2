@@ -1,8 +1,14 @@
 interface Hotplace {
   id: number;
-  name: string;
+  title: string;
+  description: string;
   lat: number;
   lng: number;
+  img: string;
+  keywords: string[];
+  view: number;
+  like: number;
+  dislike: number;
 }
 
 export interface KakaoMapProps {
@@ -13,7 +19,7 @@ export interface ResultData {
   id: number;
   title: string;
   content: string;
-  hotPlace: Hotplace[];
+  hotPlaceList: Hotplace[];
 }
 
 export interface ResultHotplaceListProps {
