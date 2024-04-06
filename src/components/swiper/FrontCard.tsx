@@ -24,7 +24,7 @@ const FrontCard: FC<Props> = ({ place, opacity, transform }) => {
           <p className="text-3xl font-bold text-white">{place.title}</p>
         </div>
         <div>
-          {place.keyword.map((keyword, index) => (
+          {place.keywords.map((keyword, index) => (
             <p
               key={index}
               className="m-2 inline rounded-full bg-white px-2 py-1 text-sm text-black"

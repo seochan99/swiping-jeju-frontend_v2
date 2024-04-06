@@ -21,7 +21,7 @@ const KakaoMap: FC<Props> = ({ place }) => {
         }}
       >
         <MapMarker
-          key={place.placeId}
+          key={place.id}
           title={place.title} // 마커 타이틀 설정
           position={{ lat: place.lat, lng: place.lng }}
         />

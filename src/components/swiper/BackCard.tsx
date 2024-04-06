@@ -39,7 +39,7 @@ const BackCard: FC<Props> = ({ place, opacity, transform }) => {
 
       <div className="flex w-full flex-col items-center justify-center gap-[10px]">
         <div className="mb-[10px] flex justify-center gap-[10px]">
-          {place.keyword.map((keyword, index) => (
+          {place.keywords.map((keyword, index) => (
             <p
               key={index}
               className="mb-[5px] rounded-[20px] bg-black px-[12px] py-[5px] text-[10px] leading-[19px] text-white"
@@ -49,7 +49,7 @@ const BackCard: FC<Props> = ({ place, opacity, transform }) => {
           ))}
         </div>
         <p className="mb-[10px] h-auto max-h-[120px] max-w-full overflow-auto rounded-[10px] px-[10px] text-[16px] leading-[20px] text-gray-300">
-          {place.content}
+          {place.description}
         </p>
       </div>
     </a.div>

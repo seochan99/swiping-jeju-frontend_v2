@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 
 import Loading from '@/components/common/Loading';
+import { useAppDataStore } from '@/context/store';
 import { useKeywords } from '@/hooks/home/useKeywords';
 import { HomeKeywordInputProps } from '@/interfaces/home/home';
 
@@ -29,11 +30,33 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
 
       const keywords = result.response.split(', ');
 
-      console.log('API 호추 결과: ', keywords);
-      router.push('/swiping');
+      return keywords;
     } catch (error) {
       console.error('API 호출 에러: ', error);
     }
+  };
+
+  //
+  const getCollections = async (keywords: string[]) => {
+    // postwedasd
+
+    // 'http://localhost:8080/api/v1/album/apply'
+
+    const response = await fetch('http://localhost:8080/api/v1/album/apply', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mapList: swipingAlbum.mapList,
+        keywordList: keywords,
+      }),
+    });
+
+    // 아이디, 핫플 리스트
+    const { id, hotPlaceList } = await response.json();
+
+    return { id, hotPlaceList };
   };
 
   // 제출
@@ -47,12 +70,28 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
 
     // 상태 업데이트
     setSwipingAlbum(updatedAlbum);
+    console.log('submitAlbum' + swipingAlbum.mapList);
 
-    await handleGetKeyword();
+    // 키워드랑 지도 push 하기
+    // const keywords = await handleGetKeyword();
+    const keywords = ['바다', '맛집', '카페'];
+
+    // 키워드 토대로 id, hotplaceList 받아오기
+    const { id, hotPlaceList } = await getCollections(keywords);
+    useAppDataStore.getState().setAppData({ id, hotPlaceList });
+    // data 불러오기
+    const data = useAppDataStore.getState().appData;
+    console.log('212312312321 data :', data);
+
+    // 키워드 추가
+    // POST /api/keywords
+
+    router.push('/swiping');
 
     setIsLoading(false);
     console.log('submitAlbum' + swipingAlbum);
   };
+
   return (
     <>
       <div className="flex size-full flex-col items-center justify-center space-y-4 p-11">
