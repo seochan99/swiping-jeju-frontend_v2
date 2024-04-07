@@ -29,13 +29,21 @@ export default function RootLayout({
       >
         {children}
         <div id="modal-root" />
+        {/* Load Kakao Maps SDK */}
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
+        {/* Load Kakao JavaScript SDK */}
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.js"
           strategy="afterInteractive"
+        />
+        {/* Load Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2869869359027632"
+          crossOrigin="anonymous"
         />
       </body>
     </html>
