@@ -7,7 +7,12 @@ import { GrPowerReset } from 'react-icons/gr';
 import Loading from '@/components/common/Loading';
 import { useAppDataStore } from '@/context/store';
 import { useKeywords } from '@/hooks/home/useKeywords';
-import { HomeKeywordInputProps } from '@/interfaces/home/home';
+import { useMutate } from '@/hooks/useMutate';
+import {
+  AlbumApplyRequest,
+  AlbumResponse,
+  HomeKeywordInputProps,
+} from '@/interfaces/home/home';
 
 import NextButton from '../common/NextButton';
 import KeywordTitle from './HomeTitle';
@@ -17,10 +22,11 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
   setSwipingAlbum,
 }) => {
   const [inputText, setInputText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
   // 커스텀 훅(useKeywords)
   const { randomKeywords, refreshKeywords } = useKeywords(10);
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleGetKeyword = async () => {
     try {
@@ -36,32 +42,14 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     }
   };
 
-  //
-  const getCollections = async (keywords: string[]) => {
-    // postwedasd
-
-    // 'http://localhost:8080/api/v1/album/apply'
-
-    const response = await fetch('http://localhost:8080/api/v1/album/apply', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        mapList: swipingAlbum.mapList,
-        keywordList: keywords,
-      }),
-    });
-
-    // 아이디, 핫플 리스트
-    const { id, hotPlaceList } = await response.json();
-
-    return { id, hotPlaceList };
-  };
+  const { trigger: getCollections, isLoading } = useMutate<
+    AlbumApplyRequest,
+    AlbumResponse
+  >('/album/apply', 'POST');
 
   // 제출
   const handleSubmit = async () => {
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     const updatedAlbum = {
       ...swipingAlbum,
@@ -77,18 +65,25 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     const keywords = ['바다', '맛집', '카페'];
 
     // 키워드 토대로 id, hotplaceList 받아오기
-    const { id, hotPlaceList } = await getCollections(keywords);
-    useAppDataStore.getState().setAppData({ id, hotPlaceList });
+    const response = await getCollections({
+      mapList: [4, 5, 6, 7],
+      keywordList: keywords,
+    });
+
+    if (response) {
+      const { id, hotPlaceList } = response;
+      useAppDataStore.getState().setAppData({ id, hotPlaceList });
+      console.log('212312312321 data :', response);
+    }
+
     // data 불러오기
-    const data = useAppDataStore.getState().appData;
-    console.log('212312312321 data :', data);
 
     // 키워드 추가
     // POST /api/keywords
 
     router.push('/swiping');
 
-    setIsLoading(false);
+    setIsSubmitting(false);
     console.log('submitAlbum' + swipingAlbum);
   };
 
@@ -151,7 +146,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
         <NextButton onClick={handleSubmit} text={'추천 받기 '} />
       </div>
 
-      {isLoading && <Loading />}
+      {(isLoading || isSubmitting) && <Loading />}
     </>
   );
 };
