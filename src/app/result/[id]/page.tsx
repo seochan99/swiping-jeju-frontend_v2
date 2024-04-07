@@ -10,24 +10,32 @@ import KakaoShareButton from '@/components/result/KakaoShareButton';
 import ResultHotplaceList from '@/components/result/ResultHotplaceList';
 import useDelayedClick from '@/hooks/home/useDelayedClick';
 // hook
-import useResultData from '@/hooks/result/useResultData';
+import { useFetch } from '@/hooks/useFetch';
+import { ResultData } from '@/interfaces/result/result';
 
 const ResultDetail: React.FC = () => {
   const pathname = usePathname();
 
   const id = pathname.split('/').pop();
-  //   console.log('id:', id);
+
   const router = useRouter();
-  // 데이터 가져오기
-  const { result, isLoaded } = useResultData(id!);
+
+  const { data: result, isLoading } = useFetch<ResultData>('/album/result', {
+    params: {
+      id,
+    },
+  });
   //클릭 핸들러
   const [handleClick, isClicked] = useDelayedClick(() => {
     router.push('/');
   });
 
-  return isLoaded ? (
-    <div className="text-center">로딩중...</div>
-  ) : (
+  if (isLoading) {
+    // TODO: 더 나은 로딩 컴포넌트 필요할 것 같음
+    return <div className="text-center">로딩중...</div>;
+  }
+
+  return (
     <div className="flex flex-col items-center justify-center space-y-4 p-11">
       <h1 className="mb-3 mt-1 text-4xl font-bold text-[#00FF66]">
         {result?.title}
