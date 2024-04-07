@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
-import { ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
 
 interface AppDataState {
   id: number;
-  hotPlaceList: ICardData[];
+  hotPlaceList: HotPlace[];
 }
 
 interface AppDataStore {

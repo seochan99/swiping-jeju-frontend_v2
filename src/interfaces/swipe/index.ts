@@ -1,16 +1,3 @@
-export interface ICardData {
-  id: number;
-  title: string;
-  description: string;
-  lat: number;
-  lng: number;
-  img: string;
-  keywords: string[];
-  view: number;
-  like: number;
-  dislike: number;
-}
-
 export type Direction = 'left' | 'right' | 'up' | 'down';
 
 export interface API {
