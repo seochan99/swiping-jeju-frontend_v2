@@ -2,26 +2,13 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 import useDelayedClick from '@/hooks/home/useDelayedClick';
-import { HomeLandingProps } from '@/interfaces/home/home';
+import { useFetch } from '@/hooks/useFetch';
+import { AlbumCountResponse, HomeLandingProps } from '@/interfaces/home/home';
 
 const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
   // 딜레이 클릭 훅 사용
   const [handleClick, isClicked] = useDelayedClick(onNext);
-
-  // cnt 상태값을 서버에서 받아옴
-  const [cnt, setCnt] = React.useState<number>(0);
-
-  // cnt 값 가져오기 테스트
-  const getCnt = async () => {
-    const response = await fetch('http://localhost:8080/api/v1/cnt');
-    const data = await response.json();
-    setCnt(data.cnt);
-    return data;
-  };
-
-  useEffect(() => {
-    getCnt();
-  }, []);
+  const { data } = useFetch<AlbumCountResponse>('/cnt');
 
   return (
     <>
@@ -70,7 +57,7 @@ const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
 
       <div className="mt-8 flex items-center justify-center">
         <p className="text-center text-base font-medium text-white">
-          {cnt}개의 앨범이 탄생했어요!
+          {data && `${data.cnt ?? 0}개의 앨범이 탄생했어요!`}
         </p>
       </div>
     </>
