@@ -1,10 +1,10 @@
 import { a, SpringValue } from '@react-spring/web';
 import React, { FC } from 'react';
 
-import { ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
 
 interface Props {
-  place: ICardData;
+  place: HotPlace;
   opacity: SpringValue<number>;
   transform: SpringValue<string>;
 }

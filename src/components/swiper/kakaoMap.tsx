@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-import { ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
 
 interface Props {
-  place: ICardData;
+  place: HotPlace;
 }
 
 const KakaoMap: FC<Props> = ({ place }) => {

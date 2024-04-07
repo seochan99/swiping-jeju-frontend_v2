@@ -11,7 +11,7 @@ import Card from '@/components/swiper/Card';
 import SwipeButton from '@/components/swiper/SwipeButton';
 import { useAppDataStore } from '@/context/store';
 import { useSwipe } from '@/hooks/swipe/useSwipe';
-import { ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
 import Dislike from '@/svg/dislike.svg';
 import Navigation from '@/svg/fork_right.svg';
 import Like from '@/svg/like.svg';
@@ -45,7 +45,7 @@ function SwipePage() {
       isFirstVisit,
       lastDirection,
     },
-  } = useSwipe<ICardData>(hotPlaceList);
+  } = useSwipe<HotPlace>(hotPlaceList);
 
   const [isComplete, setIsComplete] = useState(false);
   const [isRunout, setIsRunout] = useState(false);
@@ -145,7 +145,7 @@ function SwipePage() {
       {/* // * ------------------------------------- */}
       <div className="relative flex flex-1 items-center justify-center">
         {isLastCard ? (
-          hotPlaceList.map((place: ICardData, index) => (
+          hotPlaceList.map((place: HotPlace, index) => (
             <Card
               key={place.title}
               ref={cardRefs[index]}

@@ -2,13 +2,14 @@ import { useSpring } from '@react-spring/web';
 import React, { forwardRef, useState } from 'react';
 import TinderCard from 'react-tinder-card';
 
-import { API, Direction, ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
+import { API, Direction } from '@/interfaces/swipe';
 
 import BackCard from './BackCard';
 import FrontCard from './FrontCard';
 
 interface Props {
-  place: ICardData;
+  place: HotPlace;
   swiped: (dir: Direction, id: number, index: number) => void;
   outOfFrame: (id: number, index: number) => void;
   index: number;
