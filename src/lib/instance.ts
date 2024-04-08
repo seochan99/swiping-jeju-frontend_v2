@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 // TODO: API URL 환경변수로 빼는게 좋지 않을까 ?
-export const BASE_URL = 'http://175.106.98.7/api/v1';
-// export const BASE_URL = `http://localhost:8080/api/v1/`;
-// export const BASE_URL = `https://jsonplaceholder.typicode.com`;
+export const BASE_URL = 'https://jeju-back.swiping.kr/api/v1';
 
 export const instance = axios.create({
   baseURL: BASE_URL,

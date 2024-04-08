@@ -11,11 +11,14 @@ import Card from '@/components/swiper/Card';
 import SwipeButton from '@/components/swiper/SwipeButton';
 import { useAppDataStore } from '@/context/store';
 import { useSwipe } from '@/hooks/swipe/useSwipe';
+import { useMutate } from '@/hooks/useMutate';
 import { HotPlace } from '@/interfaces/home/home';
+import { AlbumCreateRequest, AlbumCreateResponse } from '@/interfaces/swipe';
 import Dislike from '@/svg/dislike.svg';
 import Navigation from '@/svg/fork_right.svg';
 import Like from '@/svg/like.svg';
 import Submit from '@/svg/swipe_complete.svg';
+import { log } from '@/utils/log';
 import { openKakaoMap } from '@/utils/swipe/openKakaoMap';
 
 import { ResultData } from './data';
@@ -31,6 +34,11 @@ function SwipePage() {
   const appData = useAppDataStore.getState().appData;
   const { hotPlaceList, id } = appData; // hotPlaceList 가져오기
 
+  const { trigger: postAlbum } = useMutate<
+    AlbumCreateRequest,
+    AlbumCreateResponse
+  >('/album/create', 'POST');
+
   const {
     handleUndoSwipe,
     swiped,
@@ -38,6 +46,7 @@ function SwipePage() {
     outOfFrame,
     cardRefs,
     setIsFirstVisit,
+    idArray,
     swipeState: {
       isFirstCard,
       isLastCard,
@@ -70,40 +79,26 @@ function SwipePage() {
     setIsRunout(false);
     setLoading(true);
 
-    console.log('ResultData :', ResultData);
-
-    // 제목 및 설명 생성
     const title = await axios
       .post('/api/title', { data: ResultData })
       .then((res) => res.data);
-
-    // 설명
     const description = await axios
       .post('/api/description', {
         data: ResultData,
       })
       .then((res) => res.data);
 
-    console.log('title :', title.result);
-    console.log('description :', description.result);
-    // title.result 20글자만 보여주기
-
     // 서버로 결과 데이터 전송
     // TODO : likeIdList 실제 값 으로 대체 해야함 (임시값)
-    const response = await fetch('http://localhost:8080/api/v1/album/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: id,
-        title: title.result.slice(0, 20),
-        content: description.result,
-        likeIdList: [1, 2, 3, 4, 5, 6],
-      }),
+    const response = await postAlbum({
+      id: id,
+      title: title?.result.slice(0, 40) ?? '',
+      content: description?.result ?? '',
+      likeIdList: idArray,
     });
+
     // 응답 확인
-    console.log('response :', response);
+    log('response :', response);
 
     // 끝나면 결과 페이지로 이동
     setTimeout(() => {

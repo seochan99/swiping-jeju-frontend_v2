@@ -15,3 +15,46 @@ export interface SwipeButtonProps
 }
 export interface ButtonContainerProps
   extends React.HTMLAttributes<HTMLDivElement> {}
+
+// * /api/title
+
+// export interface TitleRequest =
+
+export interface TitleRequest {
+  data: PlaceInfo[];
+}
+
+export interface PlaceInfo {
+  title: string;
+  keyword: string[];
+  description: string;
+}
+
+export interface TitleResponse {
+  result: string;
+}
+
+// * /api/description
+
+export interface DescriptionRequest {
+  title: string;
+  keyword: string[];
+  description: string;
+}
+
+export interface DescriptionResponse {
+  result: string;
+}
+
+// * /album/create
+
+export interface AlbumCreateRequest {
+  id: number;
+  title: string;
+  content: string;
+  likeIdList: number[];
+}
+
+export interface AlbumCreateResponse {
+  status: number;
+}
