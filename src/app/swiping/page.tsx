@@ -18,10 +18,7 @@ import Dislike from '@/svg/dislike.svg';
 import Navigation from '@/svg/fork_right.svg';
 import Like from '@/svg/like.svg';
 import Submit from '@/svg/swipe_complete.svg';
-import { log } from '@/utils/log';
 import { openKakaoMap } from '@/utils/swipe/openKakaoMap';
-
-import { ResultData } from './data';
 
 const Loading = dynamic(() => import('@/components/common/Loading'), {
   ssr: false,
@@ -79,6 +76,10 @@ function SwipePage() {
     setIsRunout(false);
     setLoading(true);
 
+    const ResultData = hotPlaceList.filter((place) =>
+      idArray.includes(place.id),
+    );
+
     const title = await axios
       .post('/api/title', { data: ResultData })
       .then((res) => res.data);
@@ -90,15 +91,12 @@ function SwipePage() {
 
     // 서버로 결과 데이터 전송
     // TODO : likeIdList 실제 값 으로 대체 해야함 (임시값)
-    const response = await postAlbum({
+    await postAlbum({
       id: id,
       title: title?.result.slice(0, 40) ?? '',
       content: description?.result ?? '',
       likeIdList: idArray,
     });
-
-    // 응답 확인
-    log('response :', response);
 
     // 끝나면 결과 페이지로 이동
     setTimeout(() => {
