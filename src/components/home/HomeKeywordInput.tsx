@@ -13,6 +13,7 @@ import {
   AlbumResponse,
   HomeKeywordInputProps,
 } from '@/interfaces/home/home';
+import { log } from '@/utils/log';
 
 import NextButton from '../common/NextButton';
 import KeywordTitle from './HomeTitle';
@@ -58,7 +59,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
 
     // 상태 업데이트
     setSwipingAlbum(updatedAlbum);
-    console.log('submitAlbum' + swipingAlbum.mapList);
+    log('submitAlbum' + swipingAlbum.mapList);
 
     // 키워드랑 지도 push 하기
     // const keywords = await handleGetKeyword();
@@ -73,7 +74,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     if (response) {
       const { id, hotPlaceList } = response;
       useAppDataStore.getState().setAppData({ id, hotPlaceList });
-      console.log('212312312321 data :', response);
+      log('data :', response);
     }
 
     // data 불러오기
@@ -84,7 +85,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
     router.push('/swiping');
 
     setIsSubmitting(false);
-    console.log('submitAlbum' + swipingAlbum);
+    log('submitAlbum' + swipingAlbum);
   };
 
   return (

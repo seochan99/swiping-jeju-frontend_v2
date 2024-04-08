@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { HotPlace } from '@/interfaces/home/home';
+import { log } from '@/utils/log';
 
 interface AppDataState {
   id: number;
@@ -20,7 +21,7 @@ export const useAppDataStore = create<AppDataStore>((set) => ({
   },
   // 셋팅
   setAppData: (data) => {
-    console.log('Updating appData:', data);
+    log('Updating appData:', data);
     set({ appData: data });
   },
 }));

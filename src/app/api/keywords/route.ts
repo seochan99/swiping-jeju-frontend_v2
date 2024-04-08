@@ -11,6 +11,7 @@ import { VectorStoreRetriever } from 'langchain/vectorstores/base';
 import { answerTemplate, standaloneQuestionTemplate } from '@/prompt';
 import { combineDocuments } from '@/utils/langchain/combineDocument';
 import { getLocalRetriever } from '@/utils/langchain/localRetriever';
+import { log } from '@/utils/log';
 
 export async function POST(req: Request) {
   // * 바디에서 인풋 가져옵니다.
@@ -51,12 +52,12 @@ export async function POST(req: Request) {
     answerChain,
   ]);
 
-  console.log('🚀 Invoking the runnable sequence chain...');
+  log('🚀 Invoking the runnable sequence chain...');
   // * 체이닝 실행
   const response = await chain.invoke({
     question,
   });
-  console.log('✅ Runnable sequence chain invoked successfully!');
+  log('✅ Runnable sequence chain invoked successfully!');
 
   return Response.json({ response });
 }

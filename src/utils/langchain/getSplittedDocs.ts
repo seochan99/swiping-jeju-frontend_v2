@@ -1,6 +1,8 @@
 import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
+import { log } from '../log';
+
 export const getSplittedDocs = async ({
   filePath,
   chunkSize,
@@ -13,7 +15,7 @@ export const getSplittedDocs = async ({
   const loader = new TextLoader(filePath);
   const rawDocs = await loader.load();
 
-  console.log('file text splitting\n');
+  log('file text splitting\n');
 
   // 텍스트 분할객체 설정
   const textSplitter = new RecursiveCharacterTextSplitter({
