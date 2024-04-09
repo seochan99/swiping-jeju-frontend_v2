@@ -2,12 +2,12 @@ import { a, SpringValue } from '@react-spring/web';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import { ICardData } from '@/interfaces/swipe';
+import { HotPlace } from '@/interfaces/home/home';
 
 import KakaoMap from './kakaoMap';
 
 interface Props {
-  place: ICardData;
+  place: HotPlace;
   opacity: SpringValue<number>;
   transform: SpringValue<string>;
 }

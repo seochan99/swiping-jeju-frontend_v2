@@ -13,10 +13,10 @@ export async function POST(req: Request) {
 
   const places = data
     .map(
-      (place: { title: string; keywords: string[]; content: string }) =>
+      (place: { title: string; keywords: string[]; description: string }) =>
         `1. name of place: ${place.title}
          2. vibe of place: ${place.keywords}.join(", ")
-         3. description of place: ${place.content}`,
+         3. description of place: ${place.description}`,
     )
     .join('\n');
 
@@ -58,12 +58,13 @@ export async function POST(req: Request) {
       
       Conditions:
       1. MAKE SURE to write in Korean language.
-      2. MAKE SURE to write within 15 characters.
+      2. MAKE SURE to write within a one sentence.
       3. All is about the jeju island in korea.
       4. Search the information on the Internet.
+      5. MAKE SURE to return one sentence and do not put number as prefix.
       
       
-      Desired Result:
+      Example Result:
       1. 제주도 먹방 여행, 카페까지 한번에 !
       2. 일출봉에서 폭포까지 대모험 !
       3. 제주도 바다보면서 먹고 자고 나만의 힐링 여행 ! 
