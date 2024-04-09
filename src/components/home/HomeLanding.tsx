@@ -1,12 +1,14 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import useDelayedClick from '@/hooks/home/useDelayedClick';
-import { HomeLandingProps } from '@/interfaces/home/home';
+import { useFetch } from '@/hooks/useFetch';
+import { AlbumCountResponse, HomeLandingProps } from '@/interfaces/home/home';
 
 const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
   // 딜레이 클릭 훅 사용
   const [handleClick, isClicked] = useDelayedClick(onNext);
+  const { data } = useFetch<AlbumCountResponse>('/cnt');
 
   return (
     <>
@@ -55,7 +57,7 @@ const HomeLanding: React.FC<HomeLandingProps> = ({ onNext }) => {
 
       <div className="mt-8 flex items-center justify-center">
         <p className="text-center text-base font-medium text-white">
-          29개의 앨범이 탄생했어요!
+          {data && `${data.cnt ?? 0}개의 앨범이 탄생했어요!`}
         </p>
       </div>
     </>

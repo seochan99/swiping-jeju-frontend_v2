@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 import { SHARE_SNS_IMG_SRC } from '@/constants/result/shareSnsImageSrc';
+import { log } from '@/utils/log';
 
 // Define interfaces for the Kakao SDK parts we interact with
 interface KakaoSDK {
@@ -51,7 +52,7 @@ const KakaoShareButton: React.FC<KakaoShareButtonProps> = ({ description }) => {
       !window.Kakao.isInitialized() &&
       process.env.NEXT_PUBLIC_KAKAO_API_KEY
     ) {
-      console.log('Kakao SDK initialized' + window.Kakao);
+      log('Kakao SDK initialized' + window.Kakao);
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
     }
   }, []);

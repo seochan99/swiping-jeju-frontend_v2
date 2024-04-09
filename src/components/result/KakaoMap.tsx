@@ -20,14 +20,14 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ hotplaces }) => {
   return (
     <Map
       center={{ lat: averageLat, lng: averageLng }}
-      level={6}
+      level={11}
       isPanto={true}
-      style={{ width: '100%', height: '200px', borderRadius: '20px' }}
+      style={{ width: '100%', height: '200px', borderRadius: '16px' }}
     >
       {hotplaces.map((place) => (
         <MapMarker
           key={place.id}
-          title={place.name}
+          title={place.title}
           position={{ lat: place.lat, lng: place.lng }}
         />
       ))}

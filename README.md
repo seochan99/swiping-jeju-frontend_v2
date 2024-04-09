@@ -8,11 +8,11 @@
 
 # 👋 introduce team member
 
-## [Front-End](/frontend/naemansan/README.md)
+## Front-End
 
 | name                                    | Email                |
 | --------------------------------------- | -------------------- |
-| [서희찬](https://github.com/seochan99)  | gmlcks0513@dgu.ac.kr |
+| [서희찬](https://github.com/seochan99)  | gmlcks00513@gmail.com |
 | [이정민](https://github.com/froggy1014) | ghkd4009@gmail.com   |
 
 ## 🎯 Commit Convention
@@ -26,3 +26,5 @@
 - 🚀 Deploy: Deploying stuff
 - 🔧 Chore: Other changes that don't modify src or test files
 - ⚙️ Settings: Changing configuration files
+
+

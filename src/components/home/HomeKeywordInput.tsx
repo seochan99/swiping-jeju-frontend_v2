@@ -1,11 +1,19 @@
 // Import necessary modules and types
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 
-import Loading from '@/components/loading/Loading';
+import Loading from '@/components/common/Loading';
+import { useAppDataStore } from '@/context/store';
 import { useKeywords } from '@/hooks/home/useKeywords';
-import { HomeKeywordInputProps } from '@/interfaces/home/home';
+import { useMutate } from '@/hooks/useMutate';
+import {
+  AlbumApplyRequest,
+  AlbumResponse,
+  HomeKeywordInputProps,
+} from '@/interfaces/home/home';
+import { log } from '@/utils/log';
 
 import NextButton from '../common/NextButton';
 import KeywordTitle from './HomeTitle';
@@ -15,14 +23,34 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
   setSwipingAlbum,
 }) => {
   const [inputText, setInputText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
   // 커스텀 훅(useKeywords)
   const { randomKeywords, refreshKeywords } = useKeywords(10);
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleGetKeyword = async () => {
+    try {
+      const result = await axios
+        .post('/api/keywords', { question: inputText })
+        .then((res) => res.data);
+
+      const keywords = result.response.split(', ');
+
+      return keywords;
+    } catch (error) {
+      console.error('API 호출 에러: ', error);
+    }
+  };
+
+  const { trigger: getCollections, isLoading } = useMutate<
+    AlbumApplyRequest,
+    AlbumResponse
+  >('/album/apply', 'POST');
 
   // 제출
   const handleSubmit = async () => {
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     const updatedAlbum = {
       ...swipingAlbum,
@@ -31,14 +59,35 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
 
     // 상태 업데이트
     setSwipingAlbum(updatedAlbum);
+    log('submitAlbum' + swipingAlbum.mapList);
 
-    const id = 3;
-    // 일단은 결과 페이지로 이동
-    router.push(`/result/${id}`);
+    // 키워드랑 지도 push 하기
+    // const keywords = await handleGetKeyword();
+    const keywords = ['바다', '맛집', '카페'];
 
-    setIsLoading(false);
-    console.log('submitAlbum' + swipingAlbum);
+    // 키워드 토대로 id, hotplaceList 받아오기
+    const response = await getCollections({
+      mapList: [4, 5, 6, 7],
+      keywordList: keywords,
+    });
+
+    if (response) {
+      const { id, hotPlaceList } = response;
+      useAppDataStore.getState().setAppData({ id, hotPlaceList });
+      log('data :', response);
+    }
+
+    // data 불러오기
+
+    // 키워드 추가
+    // POST /api/keywords
+
+    router.push('/swiping');
+
+    setIsSubmitting(false);
+    log('submitAlbum' + swipingAlbum);
   };
+
   return (
     <>
       <div className="flex size-full flex-col items-center justify-center space-y-4 p-11">
@@ -98,7 +147,7 @@ const HomeKeywordInput: React.FC<HomeKeywordInputProps> = ({
         <NextButton onClick={handleSubmit} text={'추천 받기 '} />
       </div>
 
-      {isLoading && <Loading />}
+      {(isLoading || isSubmitting) && <Loading />}
     </>
   );
 };

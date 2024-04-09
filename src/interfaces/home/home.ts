@@ -32,3 +32,30 @@ export interface HomeKeywordInputProps {
   swipingAlbum: SwipingAlbum;
   setSwipingAlbum: React.Dispatch<React.SetStateAction<SwipingAlbum>>;
 }
+
+// * /api/v1/cnt
+export interface AlbumCountResponse {
+  cnt: number;
+}
+
+// * /api/v1/album/apply
+
+export interface AlbumApplyRequest {
+  mapList: number[];
+  keywordList: string[];
+}
+
+export interface AlbumResponse {
+  id: number;
+  hotPlaceList: HotPlace[];
+}
+
+export interface HotPlace {
+  id: number;
+  title: string;
+  description: string;
+  lat: number;
+  lng: number;
+  img: string;
+  keywords: [string, string, string];
+}
